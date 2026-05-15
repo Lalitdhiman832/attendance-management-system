@@ -6,6 +6,9 @@ import sqlite3
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
 
+from sklearn.linear_model import LinearRegression
+import numpy as np
+
 st.set_page_config(
     page_title="Student Attendance System",
     page_icon="📊",
@@ -128,6 +131,42 @@ ax2.pie(
 )
 
 st.pyplot(fig2)
+
+# ---------------- AI ATTENDANCE PREDICTION ----------------
+
+st.subheader("🤖 AI Attendance Prediction")
+
+attendance_numbers = df["Attendance %"].values
+
+X = np.arange(len(attendance_numbers)).reshape(-1, 1)
+
+y = attendance_numbers
+
+model = LinearRegression()
+
+model.fit(X, y)
+
+future_index = np.array([[len(attendance_numbers) + 1]])
+
+prediction = model.predict(future_index)
+
+predicted_attendance = round(prediction[0], 2)
+
+st.write(
+    f"Predicted Future Attendance: {predicted_attendance}%"
+)
+
+if predicted_attendance < 75:
+
+    st.error(
+        "⚠ Warning: Attendance may fall below 75%"
+    )
+
+else:
+
+    st.success(
+        "✅ Attendance likely to remain safe"
+    )
 
 # Filter Students
 filter_option = st.selectbox(

@@ -8,6 +8,19 @@ st.set_page_config(
     layout="wide"
 )
 
+# ---------------- LOGIN SYSTEM ----------------
+
+username = st.sidebar.text_input("Username")
+
+password = st.sidebar.text_input(
+    "Password",
+    type="password"
+)
+
+if username != "admin" or password != "1234":
+    st.warning("Invalid login credentials")
+    st.stop()
+
 # Sidebar
 st.sidebar.title("📚 Attendance Dashboard")
 
